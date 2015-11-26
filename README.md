@@ -5,3 +5,4 @@ To use with mutt:
 ```
 set query_command = "/path/to/muttLookup.py '%s'"
 ```
+By pressing ctrl+q(if not changed), you will be able to do lookups in SDU's contacts.
