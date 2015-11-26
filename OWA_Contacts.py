@@ -27,8 +27,8 @@ class OWA_Contacts:
 	        payload = '<params><canary>' + canary + '</canary><AddMenuMarkup>1</AddMenuMarkup><AddRecipientResults>1</AddRecipientResults><n>' + needle + '</n></params>'
 	        r = self.session.post('https://webmail.sdu.dk/owa/ev.owa?oeh=1&ns=RecipWell&ev=ResolveOneRecipientForAnrMenu', data=payload)
 
-		if r.status_code == 440:
-			print "cookies expired"
+#		if r.status_code == 440:
+#			print "cookies expired"
 		return r.text, r.status_code
 
 	def SearchForName(self, needle):
@@ -44,8 +44,8 @@ class OWA_Contacts:
 		# Nah, we better update the cookie
 		if status_code == 440:
 			self.__getCookies()
-		else:
-			print "Using cookies"
+#		else:
+#			print "Using cookies"
 		# Let's try again
 		result, status_code = self.__searchForName(needle)
 
