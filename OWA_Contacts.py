@@ -1,6 +1,6 @@
 #!/usr/bin/python
 from bs4 import BeautifulSoup
-import requests,  requests.utils, pickle
+import requests, requests.utils, pickle
 import os.path
 import json
 import re
@@ -27,8 +27,6 @@ class OWA_Contacts:
 	        payload = '<params><canary>' + canary + '</canary><AddMenuMarkup>1</AddMenuMarkup><AddRecipientResults>1</AddRecipientResults><n>' + needle + '</n></params>'
 	        r = self.session.post('https://webmail.sdu.dk/owa/ev.owa?oeh=1&ns=RecipWell&ev=ResolveOneRecipientForAnrMenu', data=payload)
 
-#		if r.status_code == 440:
-#			print "cookies expired"
 		return r.text, r.status_code
 
 	def SearchForName(self, needle):
@@ -44,8 +42,7 @@ class OWA_Contacts:
 		# Nah, we better update the cookie
 		if status_code == 440:
 			self.__getCookies()
-#		else:
-#			print "Using cookies"
+
 		# Let's try again
 		result, status_code = self.__searchForName(needle)
 
@@ -80,8 +77,11 @@ class OWA_Contacts:
 		self.session.get('https://webmail.sdu.dk/')
 
 		url = 'https://webmail.sdu.dk/owa/auth.owa'
-		payload = {'username': self.username, 'password': self.password,'destination' : 'https://webmail.sdu.dk/owa/', 'flags' :'0', 'isUtf8':'1', 'trusted':'0', 'forcedownlevel':'0'}
+		payload = {'username': self.username, 'password': self.password, 'destination' : 'https://webmail.sdu.dk/owa/', 'flags' :'0', 'isUtf8':'1', 'trusted':'0', 'forcedownlevel':'0'}
 		r = self.session.post(url, data=payload, cookies=dict( PBack='0', tzid="Romance Standard Time") )
+
+		if "browser settings must allow scripts to run" in r.text:
+			exit("Unable to login, wrong credentials")
 
 		self.__saveCookies()
 
